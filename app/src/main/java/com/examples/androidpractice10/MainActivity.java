@@ -2,7 +2,6 @@ package com.examples.androidpractice10;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.CompoundButton;
 public class MainActivity extends AppCompatActivity {
     CheckBox checkBox;
     MyCanvas canvas;
+    String file_name = "sample.jpg";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Log.d("함수ㅊ체크", "클릭됨 : "+ b);
                 canvas.setStemp(b);
             }
         });
@@ -44,27 +43,44 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == 1){
-
-        }else if(item.getItemId() == 2){
-
+        if(item.getItemId() == 1 || item.getItemId() == 2) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                canvas.setMaskFilter(false);
+            } else {
+                item.setChecked(true);
+                canvas.setMaskFilter(true);
+            }
         }else if(item.getItemId() == 3){
+            if(item.isChecked()) item.setChecked(false);
+            else item.setChecked(true);
+            canvas.setPenWidth(item.isChecked());
 
         }else if(item.getItemId() == 4){
-
+            canvas.setPenColor(true);
         }else if(item.getItemId() == 5){
-
+            canvas.setPenColor(false);
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void onClick(View v){
         String tag = (String)v.getTag();
-        if(tag.equals("eraser")) checkBox.setChecked(false);
-        if(tag.equalsIgnoreCase("rotate") || tag.equalsIgnoreCase("move")
-                ||tag.equals("scale") || tag.equals("skew")){
-            checkBox.setChecked(true);
+        switch (tag){
+            case "save":
+                canvas.save(getFilesDir() + file_name);
+                break;
+            case "open":
+                canvas.open(getFilesDir() + file_name, getApplicationContext());
+                break;
+            case "eraser":
+                checkBox.setChecked(false);
+                canvas.setOperationType(tag);
+                break;
+            default:
+                checkBox.setChecked(true);
+                canvas.setOperationType(tag);
+                break;
         }
-        canvas.setOperationType(tag);
     }
 }

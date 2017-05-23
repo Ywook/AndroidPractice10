@@ -51,7 +51,7 @@
     <com.examples.androidpractice10.MyCanvas
         android:layout_weight="1"
         android:id="@+id/canvas"
-        android:background="#fdf660"
+        android:background="#ff22"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
 
